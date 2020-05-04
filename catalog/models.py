@@ -59,7 +59,7 @@ class Author(models.Model):
         """
         Представление модели в виде строки
         """
-        return f"{self.last_name}, {self.first_name}"
+        return f"{self.first_name} {self.last_name}"
 
 
 class Book(models.Model):
@@ -85,6 +85,25 @@ class Book(models.Model):
         Возвращает URL для доступа к конкретной книге.
         """
         return reverse('book-detail', args=[str(self.id)])
+
+
+    def display_author(self):
+        """
+        Создать строковое представление для авторов. Ипользуется для отображения авторов в админке.
+        """
+        authors = self.author.all()
+        print(authors)
+        return ', '.join([str(author) for author in authors[:3]]) + (', ...' if len(authors) > 3 else '')
+    display_author.short_description = 'Author'
+
+
+    def display_genre(self):
+        """
+        Создать строковое представление для жанра. Ипользуется для отображения жанра в админке.
+        """
+        genres = self.genre.all()
+        return ', '.join([genre.name for genre in genres[:3]]) + (', ...' if len(genres) > 3 else '')
+    display_genre.short_description = 'Genre'
 
 
 class BookInstance(models.Model):
