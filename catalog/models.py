@@ -60,6 +60,14 @@ class Author(models.Model):
         Представление модели в виде строки
         """
         return f"{self.first_name} {self.last_name}"
+    
+
+    def str_for_list_view(self):
+        return f"{self.first_name} {self.last_name} {self.str_date()}"
+    
+
+    def str_date(self):
+        return f"({self.date_of_birth} - {self.date_of_death if not self.date_of_death is None else ''})" 
 
 
 class Book(models.Model):
@@ -104,6 +112,10 @@ class Book(models.Model):
         genres = self.genre.all()
         return ', '.join([genre.name for genre in genres[:3]]) + (', ...' if len(genres) > 3 else '')
     display_genre.short_description = 'Genre'
+
+
+    def count_instanses(self):
+        return len(self.bookinstance_set.all())
 
 
 class BookInstance(models.Model):
