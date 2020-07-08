@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>Author List</h1>
+    {% if perms.catalog.can_mark_returned %} <a href="{% url 'author_create'%}">ADD NEW AUTHOR</a>  {% endif %}
 
     {% if author_list %}
     <ul>
@@ -9,6 +10,8 @@
       {% for author in author_list %}
       <li>
         <a href="{{ author.get_absolute_url }}">{{ author.str_for_list_view }}</a>
+        {% if perms.catalog.can_mark_returned %} - <a href="{% url 'author_update' author.id %}">Edit</a>  {% endif %}
+        {% if perms.catalog.can_mark_returned %} - <a href="{% url 'author_delete' author.id %}">Delete</a>  {% endif %}
       </li>
       {% endfor %}
 
